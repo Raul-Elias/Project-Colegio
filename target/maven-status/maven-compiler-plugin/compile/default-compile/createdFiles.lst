@@ -1,6 +1,7 @@
 com/colegio/project/service/AlumnoService.class
 com/colegio/project/model/Docente.class
 com/colegio/project/model/Alumno.class
+com/colegio/project/controller/AuthController$CambioPasswordRequest.class
 com/colegio/project/controller/AuthController$LoginRequest.class
 com/colegio/project/controller/AuthController.class
 com/colegio/project/service/DocenteService.class

@@ -28,4 +28,23 @@ public class AuthService {
         u.setRol(rol);
         return usuarioRepository.save(u);
     }
+
+    // Devuelve null si todo salió bien, o el mensaje de error
+    public String cambiarPassword(String correo, String actual, String nueva) {
+        Optional<Usuario> opt = autenticar(correo, actual);
+        if (opt.isEmpty()) {
+            return "La contraseña actual es incorrecta";
+        }
+        if (nueva == null || nueva.length() < 8) {
+            return "La nueva contraseña debe tener al menos 8 caracteres";
+        }
+        if (nueva.equals(actual)) {
+            return "La nueva contraseña debe ser distinta de la actual";
+        }
+        Usuario u = opt.get();
+        u.setPassword(encoder.encode(nueva));
+        u.setPrimerIngreso(false);
+        usuarioRepository.save(u);
+        return null;
+    }
 }

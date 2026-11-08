@@ -14,6 +14,8 @@ public class AuthController {
 
     public record LoginRequest(String correo, String password) {}
 
+    public record CambioPasswordRequest(String correo, String passwordActual, String passwordNueva) {}
+
     @Autowired
     private AuthService authService;
 
@@ -26,5 +28,14 @@ public class AuthController {
                         "terminosAceptados", u.getTerminosAceptados())))
                 .orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .body(Map.of("mensaje", "Correo o contraseña incorrectos")));
+    }
+
+    @PostMapping("/cambiar-password")
+    public ResponseEntity<?> cambiarPassword(@RequestBody CambioPasswordRequest req) {
+        String error = authService.cambiarPassword(req.correo(), req.passwordActual(), req.passwordNueva());
+        if (error != null) {
+            return ResponseEntity.badRequest().body(Map.of("mensaje", error));
+        }
+        return ResponseEntity.ok(Map.of("mensaje", "Contraseña actualizada"));
     }
 }

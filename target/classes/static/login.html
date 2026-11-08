@@ -17,18 +17,24 @@
   <script>
     document.getElementById("formLogin").addEventListener("submit", async (e) => {
       e.preventDefault();
+      const correo = document.getElementById("correo").value;
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          correo: document.getElementById("correo").value,
+          correo: correo,
           password: document.getElementById("password").value
         })
       });
       const datos = await res.json();
       if (res.ok) {
         sessionStorage.setItem("rol", datos.rol);
-        window.location.href = "index.html";
+        sessionStorage.setItem("correo", correo);
+        if (datos.primerIngreso) {
+          window.location.href = "cambiar-password.html";
+        } else {
+          window.location.href = "index.html";
+        }
       } else {
         document.getElementById("mensaje").textContent = datos.mensaje;
       }
