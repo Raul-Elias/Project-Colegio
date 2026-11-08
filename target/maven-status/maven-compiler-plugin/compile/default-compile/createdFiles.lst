@@ -1,0 +1,9 @@
+com/colegio/project/service/AlumnoService.class
+com/colegio/project/model/Docente.class
+com/colegio/project/model/Alumno.class
+com/colegio/project/repository/DocenteRepository.class
+com/colegio/project/service/DocenteService.class
+com/colegio/project/ProjectColegioApplication.class
+com/colegio/project/controller/DocenteController.class
+com/colegio/project/repository/AlumnoRepository.class
+com/colegio/project/controller/AlumnoController.class

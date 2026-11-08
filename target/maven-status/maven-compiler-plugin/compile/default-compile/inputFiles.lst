@@ -1,0 +1,9 @@
+/workspaces/Project-Colegio/src/main/java/com/colegio/project/model/Alumno.java
+/workspaces/Project-Colegio/src/main/java/com/colegio/project/controller/DocenteController.java
+/workspaces/Project-Colegio/src/main/java/com/colegio/project/ProjectColegioApplication.java
+/workspaces/Project-Colegio/src/main/java/com/colegio/project/service/DocenteService.java
+/workspaces/Project-Colegio/src/main/java/com/colegio/project/service/AlumnoService.java
+/workspaces/Project-Colegio/src/main/java/com/colegio/project/repository/AlumnoRepository.java
+/workspaces/Project-Colegio/src/main/java/com/colegio/project/model/Docente.java
+/workspaces/Project-Colegio/src/main/java/com/colegio/project/repository/DocenteRepository.java
+/workspaces/Project-Colegio/src/main/java/com/colegio/project/controller/AlumnoController.java

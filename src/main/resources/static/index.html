@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistema Colegio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Sistema Colegio</h1>
+
+  <section>
+    <h2>Alumnos</h2>
+    <form id="formAlumno">
+      <input id="aNombres" placeholder="Nombres" required>
+      <input id="aApellido" placeholder="Apellido" required>
+      <input id="aGrado" placeholder="Grado" required>
+      <input id="aPromedio" type="number" step="0.01" placeholder="Promedio" required>
+      <button type="submit">Guardar alumno</button>
+    </form>
+    <table>
+      <thead><tr><th>ID</th><th>Nombres</th><th>Apellido</th><th>Grado</th><th>Promedio</th></tr></thead>
+      <tbody id="tablaAlumnos"></tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Docentes</h2>
+    <form id="formDocente">
+      <input id="dNombres" placeholder="Nombres" required>
+      <input id="dEspecialidad" placeholder="Especialidad" required>
+      <input id="dCorreo" type="email" placeholder="Correo" required>
+      <input id="dTelefono" placeholder="Teléfono" required>
+      <button type="submit">Guardar docente</button>
+    </form>
+    <table>
+      <thead><tr><th>ID</th><th>Nombres</th><th>Especialidad</th><th>Correo</th><th>Teléfono</th></tr></thead>
+      <tbody id="tablaDocentes"></tbody>
+    </table>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
