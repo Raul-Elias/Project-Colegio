@@ -47,4 +47,16 @@ public class AuthService {
         usuarioRepository.save(u);
         return null;
     }
+
+    // Devuelve true si el usuario existe y se marcó la aceptación
+    public boolean aceptarTerminos(String correo) {
+        Optional<Usuario> opt = usuarioRepository.findByCorreo(correo);
+        if (opt.isEmpty()) {
+            return false;
+        }
+        Usuario u = opt.get();
+        u.setTerminosAceptados(true);
+        usuarioRepository.save(u);
+        return true;
+    }
 }

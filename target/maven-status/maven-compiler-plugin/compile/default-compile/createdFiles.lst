@@ -8,6 +8,7 @@ com/colegio/project/service/DocenteService.class
 com/colegio/project/controller/DocenteController.class
 com/colegio/project/repository/AlumnoRepository.class
 com/colegio/project/controller/AlumnoController.class
+com/colegio/project/controller/AuthController$AceptarTerminosRequest.class
 com/colegio/project/repository/UsuarioRepository.class
 com/colegio/project/service/AuthService.class
 com/colegio/project/repository/DocenteRepository.class

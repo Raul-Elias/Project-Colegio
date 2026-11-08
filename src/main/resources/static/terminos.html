@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Términos y condiciones</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Términos y condiciones de uso</h1>
+
+  <div style="max-width:600px;margin:auto;border:1px solid #ccc;padding:15px;height:220px;overflow-y:auto;">
+    <p><strong>1. Uso del sistema.</strong> El sistema es de uso exclusivo del personal, docentes y alumnos del colegio, para fines académicos y administrativos.</p>
+    <p><strong>2. Cuenta personal.</strong> Cada usuario es responsable de mantener la confidencialidad de su contraseña y no debe compartirla con otras personas.</p>
+    <p><strong>3. Datos personales.</strong> La información registrada será usada solo para la gestión académica y administrativa del colegio.</p>
+    <p><strong>4. Conducta.</strong> Está prohibido modificar, borrar o consultar información sin autorización.</p>
+    <p><strong>5. Cambios.</strong> El colegio puede actualizar estos términos y se notificará a los usuarios.</p>
+  </div>
+
+  <form id="formTerminos" style="max-width:600px;margin:15px auto;flex-direction:column;">
+    <label>
+      <input type="checkbox" id="acepto" style="flex:none;min-width:auto;">
+      He leído y acepto los términos y condiciones de uso
+    </label>
+    <button type="submit" id="btnAceptar" disabled>Aceptar y continuar</button>
+    <button type="button" id="btnRechazar" style="background:#6b7280;">No acepto</button>
+    <p id="mensaje" style="color:red;"></p>
+  </form>
+
+  <script>
+    const correo = sessionStorage.getItem("correo");
+    if (!correo) {
+      window.location.href = "login.html";
+    }
+
+    const acepto = document.getElementById("acepto");
+    const btnAceptar = document.getElementById("btnAceptar");
+
+    acepto.addEventListener("change", () => {
+      btnAceptar.disabled = !acepto.checked;
+    });
+
+    document.getElementById("btnRechazar").addEventListener("click", () => {
+      sessionStorage.clear();
+      window.location.href = "login.html";
+    });
+
+    document.getElementById("formTerminos").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const res = await fetch("/api/auth/aceptar-terminos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ correo: correo })
+      });
+      if (res.ok) {
+        window.location.href = "index.html";
+      } else {
+        const datos = await res.json();
+        document.getElementById("mensaje").textContent = datos.mensaje;
+      }
+    });
+  </script>
+</body>
+</html>

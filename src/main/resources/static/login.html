@@ -32,6 +32,8 @@
         sessionStorage.setItem("correo", correo);
         if (datos.primerIngreso) {
           window.location.href = "cambiar-password.html";
+        } else if (!datos.terminosAceptados) {
+          window.location.href = "terminos.html";
         } else {
           window.location.href = "index.html";
         }

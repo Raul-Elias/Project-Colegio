@@ -16,6 +16,8 @@ public class AuthController {
 
     public record CambioPasswordRequest(String correo, String passwordActual, String passwordNueva) {}
 
+    public record AceptarTerminosRequest(String correo) {}
+
     @Autowired
     private AuthService authService;
 
@@ -37,5 +39,13 @@ public class AuthController {
             return ResponseEntity.badRequest().body(Map.of("mensaje", error));
         }
         return ResponseEntity.ok(Map.of("mensaje", "Contraseña actualizada"));
+    }
+
+    @PostMapping("/aceptar-terminos")
+    public ResponseEntity<?> aceptarTerminos(@RequestBody AceptarTerminosRequest req) {
+        if (!authService.aceptarTerminos(req.correo())) {
+            return ResponseEntity.badRequest().body(Map.of("mensaje", "Usuario no encontrado"));
+        }
+        return ResponseEntity.ok(Map.of("mensaje", "Términos aceptados"));
     }
 }
