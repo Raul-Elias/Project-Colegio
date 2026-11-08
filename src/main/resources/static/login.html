@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Iniciar sesión</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Iniciar sesión</h1>
+  <form id="formLogin" style="max-width:320px;margin:auto;flex-direction:column;">
+    <input id="correo" type="email" placeholder="Correo" required>
+    <input id="password" type="password" placeholder="Contraseña" required>
+    <button type="submit">Ingresar</button>
+    <p id="mensaje" style="color:red;"></p>
+  </form>
+
+  <script>
+    document.getElementById("formLogin").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          correo: document.getElementById("correo").value,
+          password: document.getElementById("password").value
+        })
+      });
+      const datos = await res.json();
+      if (res.ok) {
+        sessionStorage.setItem("rol", datos.rol);
+        window.location.href = "index.html";
+      } else {
+        document.getElementById("mensaje").textContent = datos.mensaje;
+      }
+    });
+  </script>
+</body>
+</html>
