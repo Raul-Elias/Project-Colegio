@@ -1,9 +1,138 @@
-body { font-family: Arial, sans-serif; max-width: 900px; margin: 30px auto; padding: 0 15px; }
+:root {
+  --azul: #1d4ed8;
+  --azul-oscuro: #1e3a8a;
+  --gris: #6b7280;
+  --rojo: #dc2626;
+  --fondo: #f1f5f9;
+  --borde: #d1d5db;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--fondo);
+  color: #111827;
+  margin: 0;
+}
 h1 { text-align: center; }
-section { margin-bottom: 40px; }
-form { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; }
-input { padding: 8px; flex: 1; min-width: 140px; }
-button { padding: 8px 16px; background: #2563eb; color: white; border: none; cursor: pointer; }
-table { width: 100%; border-collapse: collapse; }
-th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-th { background: #f0f0f0; }
+
+/* ---------- Formularios ---------- */
+form { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+input {
+  padding: 10px;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  font-size: 14px;
+  flex: 1;
+  min-width: 140px;
+}
+input:focus { outline: 2px solid var(--azul); border-color: transparent; }
+input[type="checkbox"] { flex: none; min-width: auto; margin-right: 8px; }
+
+button {
+  padding: 10px 16px;
+  background: var(--azul);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+}
+button:hover { background: var(--azul-oscuro); }
+button:disabled { background: #9ca3af; cursor: not-allowed; }
+button.secundario { background: var(--gris); }
+button.secundario:hover { background: #4b5563; }
+button.peligro { background: var(--rojo); }
+button.peligro:hover { background: #b91c1c; }
+
+.mensaje { min-height: 1.3em; margin: 4px 0; font-size: 14px; }
+.error { color: #b91c1c; }
+.exito { color: #15803d; }
+
+/* ---------- Panel principal (index) ---------- */
+.barra {
+  background: var(--azul-oscuro);
+  color: white;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.barra .titulo { font-weight: 700; font-size: 18px; }
+.barra .usuario { display: flex; align-items: center; gap: 12px; font-size: 14px; }
+.barra button { background: rgba(255, 255, 255, 0.15); }
+.barra button:hover { background: rgba(255, 255, 255, 0.3); }
+
+main { max-width: 1000px; margin: 24px auto; padding: 0 15px; }
+section {
+background: white;
+border-radius: 10px;
+padding: 20px;
+margin-bottom: 24px;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+section h2 { margin-top: 0; }
+
+.tabla-scroll { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { border-bottom: 1px solid #e5e7eb; padding: 8px; text-align: left; }
+th { background: #f3f4f6; }
+td.acciones { white-space: nowrap; }
+td.acciones button { padding: 6px 10px; font-size: 13px; }
+
+
+/* ---------- Pantallas de acceso (login, cambiar contraseña, términos) ---------- */
+body.acceso {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.tarjeta {
+  background: white;
+  width: 100%;
+  max-width: 400px;
+  padding: 32px 28px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+.tarjeta.ancha { max-width: 640px; }
+.marca {
+  text-align: center;
+  color: var(--azul-oscuro);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-size: 14px;
+  text-transform: uppercase;
+  margin: 0 0 4px;
+}
+.tarjeta h1 { text-align: center; margin: 0 0 8px; font-size: 24px; }
+.ayuda { text-align: center; color: var(--gris); font-size: 14px; margin: 0 0 18px; }
+.tarjeta form { flex-direction: column; }
+.terminos {
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  padding: 12px 16px;
+  height: 220px;
+  overflow-y: auto;
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+/* ---------- Verificación en dos pasos ---------- */
+.clave {
+  display: block;
+  word-break: break-all;
+  background: #eff6ff;
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 16px;
+  letter-spacing: 1px;
+  text-align: center;
+  margin: 8px 0 14px;
+}
+#qr { display: flex; justify-content: center; margin: 10px 0; }

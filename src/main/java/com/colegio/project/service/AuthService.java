@@ -59,4 +59,35 @@ public class AuthService {
         usuarioRepository.save(u);
         return true;
     }
+    
+    // ----- Verificación en dos pasos (solo cuenta de administración) -----
+
+    public boolean doblePasoActivo(Usuario u) {
+        return "ADMIN".equals(u.getRol()) && Boolean.TRUE.equals(u.getDoblePasoActivo());
+    }
+
+    // Valida contraseña y, si el usuario tiene doble paso activo, también el código
+    public Optional<Usuario> autenticarConCodigo(String correo, String password, String codigo) {
+        return autenticar(correo, password)
+                .filter(u -> !doblePasoActivo(u) || Totp.verificar(u.getSecreto2fa(), codigo));
+    }
+
+    // Crea una clave nueva (todavía sin activar) y la devuelve
+    public String generarSecreto(Usuario u) {
+        String secreto = Totp.generarSecreto();
+        u.setSecreto2fa(secreto);
+        u.setDoblePasoActivo(false);
+        usuarioRepository.save(u);
+        return secreto;
+    }
+
+    // Activa el doble paso si el código corresponde a la clave generada
+    public boolean activarDoblePaso(Usuario u, String codigo) {
+        if (u.getSecreto2fa() == null || !Totp.verificar(u.getSecreto2fa(), codigo)) {
+            return false;
+        }
+        u.setDoblePasoActivo(true);
+        usuarioRepository.save(u);
+        return true;
+    }
 }

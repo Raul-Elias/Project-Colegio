@@ -25,4 +25,14 @@ public class AlumnoService {
     public Optional<Alumno> buscarPorId(Long id) {
         return alumnoRepository.findById(id);
     }
+
+    public void eliminar(Long id) {
+        alumnoRepository.deleteById(id);
+    }
+
+    public boolean dniEnUso(String dni, Long idActual) {
+        return alumnoRepository.findByDni(dni)
+                .map(a -> !a.getId().equals(idActual))
+                .orElse(false);
+    }
 }
