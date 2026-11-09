@@ -1,6 +1,11 @@
 package com.colegio.project.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "alumnos")
@@ -10,16 +15,32 @@ public class Alumno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "El DNI es obligatorio")
+    @Pattern(regexp = "\\d{8}", message = "El DNI debe tener 8 dígitos")
+    @Column(unique = true)
+    private String dni;
+
+    @NotBlank(message = "Los nombres son obligatorios")
     private String nombres;
+
+    @NotBlank(message = "El apellido es obligatorio")
     private String apellido;
+
+    @NotBlank(message = "El grado es obligatorio")
     private String grado;
+
+    @NotNull(message = "El promedio es obligatorio")
+    @DecimalMin(value = "0", message = "El promedio debe estar entre 0 y 20")
+    @DecimalMax(value = "20", message = "El promedio debe estar entre 0 y 20")
     private Double promedio;
 
     public Alumno() {}
 
-    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public String getDni() { return dni; }
+    public void setDni(String dni) { this.dni = dni; }
 
     public String getNombres() { return nombres; }
     public void setNombres(String nombres) { this.nombres = nombres; }

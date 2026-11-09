@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Verificación en dos pasos</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Librería para dibujar el código QR (si no carga, igual se puede escribir la clave a mano) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body class="acceso">
+    <div class="tarjeta">
+    <p class="marca">Colegio San Jose Maria</p>
+    <h1>Verificación en dos pasos</h1>
+    <p class="ayuda">La cuenta de administración se protege con un código de tu aplicación de autenticación (Google Authenticator, Microsoft Authenticator, Authy...).</p>
+
+    <!-- Paso 1: confirmar contraseña y generar la clave -->
+    <form id="formClave">
+    <input id="password" type="password" placeholder="Confirma tu contraseña" required autocomplete="current-password">
+    <button type="submit">Generar clave</button>
+    </form>
+
+    <!-- Paso 2: agregar la clave a la aplicación y escribir el primer código -->
+    <div id="paso2" hidden>
+    <p class="ayuda" style="text-align:left;">1. En tu aplicación, agrega una cuenta escaneando el QR o escribiendo esta clave:</p>
+    <div id="qr"></div>
+    <code id="clave" class="clave"></code>
+    <p class="ayuda" style="text-align:left;">2. Escribe el código de 6 dígitos que muestra la aplicación:</p>
+    <form id="formActivar">
+        <input id="codigo" inputmode="numeric" maxlength="6" placeholder="Código de 6 dígitos" required autocomplete="one-time-code">
+        <button type="submit">Activar verificación</button>
+    </form>
+    </div>
+
+    <p id="mensaje" class="mensaje error"></p>
+    <p style="text-align:center;margin:8px 0 0;"><a href="login.html" id="salir">Cerrar sesión</a></p>
+    </div>
+
+    <script>
+    const correo = sessionStorage.getItem("correo");
+    if (!correo || sessionStorage.getItem("rol") !== "ADMIN") {
+    window.location.href = "login.html";
+    }
+
+    const mensaje = document.getElementById("mensaje");
+    let passwordTemp = ""; // solo en memoria, se borra al terminar
+
+    document.getElementById("salir").addEventListener("click", () => sessionStorage.clear());
+
+    document.getElementById("formClave").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    mensaje.textContent = "";
+    const password = document.getElementById("password").value;
+    try {
+        const res = await fetch("/api/auth/2fa/configurar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ correo: correo, password: password })
+        });
+        const datos = await res.json();
+        if (!res.ok) {
+        mensaje.textContent = datos.mensaje;
+        return;
+        }
+        passwordTemp = password;
+        document.getElementById("clave").textContent = datos.secreto;
+        try {
+        document.getElementById("qr").innerHTML = "";
+        new QRCode(document.getElementById("qr"), { text: datos.uri, width: 180, height: 180 });
+        } catch (err) {
+          // Sin QR: queda la clave escrita para ingresarla manualmente
+        }
+        document.getElementById("formClave").hidden = true;
+        document.getElementById("paso2").hidden = false;
+        document.getElementById("codigo").focus();
+    } catch (err) {
+        mensaje.textContent = "No se pudo conectar con el servidor";
+    }
+    });
+
+    document.getElementById("formActivar").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    mensaje.textContent = "";
+    try {
+        const res = await fetch("/api/auth/2fa/activar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            correo: correo,
+            password: passwordTemp,
+            codigo: document.getElementById("codigo").value.trim()
+        })
+        });
+        const datos = await res.json();
+        if (res.ok) {
+        passwordTemp = "";
+        alert("Verificación en dos pasos activada. Desde ahora te pediremos un código al iniciar sesión.");
+        window.location.href = "index.html";
+        } else {
+        mensaje.textContent = datos.mensaje;
+        }
+    } catch (err) {
+        mensaje.textContent = "No se pudo conectar con el servidor";
+    }
+    });
+    </script>
+</body>
+</html>

@@ -29,4 +29,10 @@ public class DocenteService {
     public void eliminar(Long id) {
         docenteRepository.deleteById(id);
     }
+
+    public boolean dniEnUso(String dni, Long idActual) {
+        return docenteRepository.findByDni(dni)
+                .map(d -> !d.getId().equals(idActual))
+                .orElse(false);
+    }
 }

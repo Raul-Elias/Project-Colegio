@@ -16,6 +16,8 @@ public class Usuario {
     private String rol;
     private Boolean primerIngreso = true;
     private Boolean terminosAceptados = false;
+    private String secreto2fa;
+    private Boolean doblePasoActivo = false;
 
     public Usuario() {}
 
@@ -36,4 +38,11 @@ public class Usuario {
 
     public Boolean getTerminosAceptados() { return terminosAceptados; }
     public void setTerminosAceptados(Boolean terminosAceptados) { this.terminosAceptados = terminosAceptados; }
+
+    
+    public String getSecreto2fa() { return secreto2fa; }
+    public void setSecreto2fa(String secreto2fa) { this.secreto2fa = secreto2fa; }
+
+    public Boolean getDoblePasoActivo() { return doblePasoActivo; }
+    public void setDoblePasoActivo(Boolean doblePasoActivo) { this.doblePasoActivo = doblePasoActivo; }
 }

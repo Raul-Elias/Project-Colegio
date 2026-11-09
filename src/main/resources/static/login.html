@@ -2,44 +2,129 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Iniciar sesión</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <h1>Iniciar sesión</h1>
-  <form id="formLogin" style="max-width:320px;margin:auto;flex-direction:column;">
-    <input id="correo" type="email" placeholder="Correo" required>
-    <input id="password" type="password" placeholder="Contraseña" required>
-    <button type="submit">Ingresar</button>
-    <p id="mensaje" style="color:red;"></p>
-  </form>
+<body class="acceso">
+  <div class="tarjeta">
+    <p class="marca">Colegio San Jose Maria</p>
+    <h1>Iniciar sesión</h1>
+    <p class="ayuda" id="ayuda">Ingresa con tu correo y contraseña.</p>
+
+    <!-- Paso 1: correo y contraseña -->
+    <form id="formLogin">
+      <input id="correo" type="email" placeholder="Correo" required autocomplete="username">
+      <input id="password" type="password" placeholder="Contraseña" required autocomplete="current-password">
+      <button type="submit">Ingresar</button>
+    </form>
+
+    <!-- Paso 2 (solo administrador con doble paso activo): código de 6 dígitos -->
+    <form id="formCodigo" hidden>
+      <input id="codigo" inputmode="numeric" maxlength="6" placeholder="Código de 6 dígitos" required autocomplete="one-time-code">
+      <button type="submit">Verificar código</button>
+      <button type="button" id="btnVolver" class="secundario">Volver</button>
+    </form>
+
+    <p id="mensaje" class="mensaje error"></p>
+  </div>
 
   <script>
-    document.getElementById("formLogin").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const correo = document.getElementById("correo").value;
-      const res = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          correo: correo,
-          password: document.getElementById("password").value
-        })
-      });
-      const datos = await res.json();
-      if (res.ok) {
-        sessionStorage.setItem("rol", datos.rol);
-        sessionStorage.setItem("correo", correo);
-        if (datos.primerIngreso) {
-          window.location.href = "cambiar-password.html";
-        } else if (!datos.terminosAceptados) {
-          window.location.href = "terminos.html";
-        } else {
-          window.location.href = "index.html";
-        }
+    const formLogin = document.getElementById("formLogin");
+    const formCodigo = document.getElementById("formCodigo");
+    const mensaje = document.getElementById("mensaje");
+    const ayuda = document.getElementById("ayuda");
+
+    // Datos que se guardan en memoria solo mientras se escribe el código (no se guardan en el navegador)
+    let correoTemp = "";
+    let passwordTemp = "";
+
+    // Decide a qué pantalla ir según el estado del usuario
+    function continuar(datos, correo) {
+      sessionStorage.setItem("rol", datos.rol);
+      sessionStorage.setItem("correo", correo);
+      if (datos.primerIngreso) {
+        window.location.href = "cambiar-password.html";
+      } else if (!datos.terminosAceptados) {
+        window.location.href = "terminos.html";
+      } else if (datos.rol === "ADMIN" && !datos.doblePasoActivo) {
+        window.location.href = "configurar-2fa.html";
       } else {
-        document.getElementById("mensaje").textContent = datos.mensaje;
+        window.location.href = "index.html";
       }
+    }
+
+    function mostrarPasoCodigo(visible) {
+      formLogin.hidden = visible;
+      formCodigo.hidden = !visible;
+      ayuda.textContent = visible
+        ? "Escribe el código que muestra tu aplicación de autenticación."
+        : "Ingresa con tu correo y contraseña.";
+      mensaje.textContent = "";
+      if (visible) {
+        document.getElementById("codigo").value = "";
+        document.getElementById("codigo").focus();
+      }
+    }
+
+    formLogin.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      mensaje.textContent = "";
+      const correo = document.getElementById("correo").value.trim();
+      const password = document.getElementById("password").value;
+      try {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ correo: correo, password: password })
+        });
+        const datos = await res.json();
+        if (!res.ok) {
+          mensaje.textContent = datos.mensaje || "No se pudo iniciar sesión";
+          return;
+        }
+        if (datos.doblePasoActivo) {
+          correoTemp = correo;
+          passwordTemp = password;
+          mostrarPasoCodigo(true);
+        } else {
+          continuar(datos, correo);
+        }
+      } catch (err) {
+        mensaje.textContent = "No se pudo conectar con el servidor";
+      }
+    });
+
+    formCodigo.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      mensaje.textContent = "";
+      try {
+        const res = await fetch("/api/auth/2fa/verificar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            correo: correoTemp,
+            password: passwordTemp,
+            codigo: document.getElementById("codigo").value.trim()
+          })
+        });
+        const datos = await res.json();
+        if (!res.ok) {
+          mensaje.textContent = datos.mensaje || "Código incorrecto";
+          return;
+        }
+        const correo = correoTemp;
+        passwordTemp = "";
+        continuar(datos, correo);
+      } catch (err) {
+        mensaje.textContent = "No se pudo conectar con el servidor";
+      }
+    });
+
+    document.getElementById("btnVolver").addEventListener("click", () => {
+      passwordTemp = "";
+      document.getElementById("password").value = "";
+      mostrarPasoCodigo(false);
     });
   </script>
 </body>
