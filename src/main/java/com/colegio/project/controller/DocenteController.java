@@ -2,6 +2,7 @@ package com.colegio.project.controller;
 
 import com.colegio.project.model.Docente;
 import com.colegio.project.service.DocenteService;
+import com.colegio.project.service.HorarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,10 @@ public class DocenteController {
 
     @Autowired
     private DocenteService docenteService;
+
+    @Autowired
+    private HorarioService horarioService;
+
 
     @GetMapping
     public ResponseEntity<List<Docente>> listar() {
@@ -59,6 +64,10 @@ public class DocenteController {
         if (docenteService.buscarPorId(id).isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("mensaje", "El docente no existe"));
+        }
+        if (horarioService.docenteTieneHorarios(id)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("mensaje", "No se puede eliminar: el docente tiene horarios registrados"));
         }
         docenteService.eliminar(id);
         return ResponseEntity.ok(Map.of("mensaje", "Docente eliminado"));

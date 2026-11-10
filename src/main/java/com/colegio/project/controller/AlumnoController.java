@@ -2,6 +2,7 @@ package com.colegio.project.controller;
 
 import com.colegio.project.model.Alumno;
 import com.colegio.project.service.AlumnoService;
+import com.colegio.project.service.MatriculaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,9 @@ public class AlumnoController {
 
     @Autowired
     private AlumnoService alumnoService;
+
+    @Autowired
+    private MatriculaService matriculaService;
 
     @GetMapping
     public ResponseEntity<List<Alumno>> listar() {
@@ -59,6 +63,10 @@ public class AlumnoController {
         if (alumnoService.buscarPorId(id).isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(Map.of("mensaje", "El alumno no existe"));
+        }
+        if (matriculaService.alumnoTieneMatriculas(id)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT)
+                    .body(Map.of("mensaje", "No se puede eliminar: el alumno tiene matrículas registradas"));
         }
         alumnoService.eliminar(id);
         return ResponseEntity.ok(Map.of("mensaje", "Alumno eliminado"));

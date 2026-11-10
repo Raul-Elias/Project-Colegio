@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Matrículas - Colegio San Jose Maria</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    select, input[type="number"] {
+      padding: 10px;
+      border: 1px solid var(--borde);
+      border-radius: 6px;
+      font-size: 14px;
+      flex: 1;
+      min-width: 140px;
+      background: white;
+    }
+    select:focus { outline: 2px solid var(--azul); border-color: transparent; }
+    .barra a { color: white; font-size: 14px; margin-right: 8px; }
+  </style>
+  <script>
+    if (!sessionStorage.getItem("correo")) {
+      window.location.replace("login.html");
+    }
+  </script>
+</head>
+<body>
+  <header class="barra">
+    <span class="titulo">Colegio San Jose Maria</span>
+    <span class="usuario">
+      <a href="index.html">Alumnos y docentes</a>
+      <a href="academico.html">Grados, secciones y cursos</a>
+      <a style="color:rgb(255, 230, 0);font-size:14px">Matrículas</a>
+      <a href="horarios.html">Horarios</a>
+      <a href="asistencia.html">Asistencia</a>
+      <span id="usuarioActual"></span>
+      <button type="button" id="btnSalir">Cerrar sesión</button>
+    </span>
+  </header>
+
+  <main>
+    <section>
+      <h2>Matricular alumno</h2>
+      <form id="formMatricula">
+        <select id="mAlumno" required></select>
+        <select id="mSeccion" required></select>
+        <input type="number" id="mAnio" placeholder="Año escolar" min="2000" max="2100" required>
+        <button type="submit">Matricular</button>
+      </form>
+      <p id="msgMatricula" class="mensaje"></p>
+    </section>
+
+    <section id="panelTraslado" hidden>
+      <h2>Trasladar matrícula</h2>
+      <p id="infoTraslado"></p>
+      <form id="formTraslado">
+        <select id="tSeccion" required></select>
+        <input id="tMotivo" placeholder="Motivo (opcional)">
+        <button type="submit">Trasladar</button>
+        <button type="button" id="btnCancelarTraslado" class="secundario">Cancelar</button>
+      </form>
+    </section>
+
+    <section>
+      <div class="cabecera-tabla"><h2>Matrículas</h2><button type="button" class="secundario" id="btnOrdenMatriculas"></button></div>
+      <form id="formFiltro">
+        <input type="number" id="fAnio" placeholder="Filtrar por año escolar" min="2000" max="2100">
+        <button type="submit" class="secundario">Filtrar</button>
+        <button type="button" id="btnTodas" class="secundario">Ver todas</button>
+      </form>
+      <div class="tabla-scroll">
+        <table>
+          <thead><tr><th>Año</th><th>DNI</th><th>Alumno</th><th>Grado</th><th>Sección</th><th>Estado</th><th>Fecha</th><th>Acciones</th></tr></thead>
+          <tbody id="tablaMatriculas"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="panelHistorial" hidden>
+      <h2 id="tituloHistorial">Historial</h2>
+      <div class="tabla-scroll">
+        <table>
+          <thead><tr><th>Fecha</th><th>Acción</th><th>Sección origen</th><th>Sección destino</th><th>Motivo</th></tr></thead>
+          <tbody id="tablaHistorial"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="orden.js"></script>
+  <script src="matriculas.js"></script>
+</body>
+</html>

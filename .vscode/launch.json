@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-ProjectColegioApplication<project-colegio>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.colegio.project.ProjectColegioApplication",
+            "projectName": "project-colegio",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
