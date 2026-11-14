@@ -34,6 +34,20 @@ public class Alumno {
     @DecimalMax(value = "20", message = "El promedio debe estar entre 0 y 20")
     private Double promedio;
 
+    private Double asistencia = 95.0;
+    private String continuidad = "INDECISO"; // CONTINUA | NO_CONTINUA | INDECISO
+    private String motivoNoContinua;
+    private java.time.LocalDate fechaMatricula = java.time.LocalDate.now();
+
+    public Double getAsistencia() { return asistencia; }
+    public void setAsistencia(Double v) { this.asistencia = v; }
+    public String getContinuidad() { return continuidad; }
+    public void setContinuidad(String v) { this.continuidad = v; }
+    public String getMotivoNoContinua() { return motivoNoContinua; }
+    public void setMotivoNoContinua(String v) { this.motivoNoContinua = v; }
+    public java.time.LocalDate getFechaMatricula() { return fechaMatricula; }
+    public void setFechaMatricula(java.time.LocalDate v) { this.fechaMatricula = v; }
+
     public Alumno() {}
 
     public Long getId() { return id; }

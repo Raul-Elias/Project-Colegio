@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grados, secciones y cursos - Colegio San Jose Maria</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    select {
+      padding: 10px;
+      border: 1px solid var(--borde);
+      border-radius: 6px;
+      font-size: 14px;
+      flex: 1;
+      min-width: 140px;
+      background: white;
+    }
+    select:focus { outline: 2px solid var(--azul); border-color: transparent; }
+    .barra a { color: white; font-size: 14px; margin-right: 8px; }
+  </style>
+  <script>
+    if (!sessionStorage.getItem("correo")) {
+      window.location.replace("login.html");
+    }
+  </script>
+</head>
+<body>
+  <header class="barra">
+    <span class="titulo">Colegio San Jose Maria</span>
+    <span class="usuario">
+      <a href="index.html">Alumnos y docentes</a>
+      <a href="matriculas.html">Matrículas</a>
+      <a href="horarios.html">Horarios</a>
+      <a href="asistencia.html">Asistencia</a>
+      <span id="usuarioActual"></span>
+      <button type="button" id="btnSalir">Cerrar sesión</button>
+    </span>
+  </header>
+
+  <main>
+    <section>
+      <div class="cabecera-tabla"><h2>Grados</h2><button type="button" class="secundario" id="btnOrdenGrados"></button></div>
+      <form id="formGrado">
+        <input type="hidden" id="gId">
+        <input id="gNombre" placeholder="Nombre (ej. 1.° Grado)" required>
+        <select id="gNivel" required>
+          <option value="">Nivel</option>
+          <option value="INICIAL">Inicial</option>
+          <option value="PRIMARIA">Primaria</option>
+          <option value="SECUNDARIA">Secundaria</option>
+        </select>
+        <button type="submit" id="btnGuardarGrado">Guardar grado</button>
+        <button type="button" id="btnCancelarGrado" class="secundario" hidden>Cancelar</button>
+      </form>
+      <p id="msgGrado" class="mensaje"></p>
+      <div class="tabla-scroll">
+        <table>
+          <thead><tr><th>ID</th><th>Nombre</th><th>Nivel</th><th>Acciones</th></tr></thead>
+          <tbody id="tablaGrados"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="cabecera-tabla"><h2>Secciones</h2><button type="button" class="secundario" id="btnOrdenSecciones"></button></div>
+      <form id="formSeccion">
+        <input type="hidden" id="sId">
+        <select id="sGrado" required></select>
+        <input id="sNombre" placeholder="Sección (ej. A)" required>
+        <button type="submit" id="btnGuardarSeccion">Guardar sección</button>
+        <button type="button" id="btnCancelarSeccion" class="secundario" hidden>Cancelar</button>
+      </form>
+      <p id="msgSeccion" class="mensaje"></p>
+      <div class="tabla-scroll">
+        <table>
+          <thead><tr><th>ID</th><th>Grado</th><th>Sección</th><th>Acciones</th></tr></thead>
+          <tbody id="tablaSecciones"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <div class="cabecera-tabla"><h2>Cursos</h2><button type="button" class="secundario" id="btnOrdenCursos"></button></div>
+      <form id="formCurso">
+        <input type="hidden" id="cId">
+        <select id="cGrado" required></select>
+        <input id="cNombre" placeholder="Curso (ej. Matemática)" required>
+        <button type="submit" id="btnGuardarCurso">Guardar curso</button>
+        <button type="button" id="btnCancelarCurso" class="secundario" hidden>Cancelar</button>
+      </form>
+      <p id="msgCurso" class="mensaje"></p>
+      <div class="tabla-scroll">
+        <table>
+          <thead><tr><th>ID</th><th>Grado</th><th>Curso</th><th>Acciones</th></tr></thead>
+          <tbody id="tablaCursos"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="orden.js"></script>
+  <script src="academico.js"></script>
+</body>
+</html>

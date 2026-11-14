@@ -18,6 +18,8 @@ public class AlumnoController {
 
     @Autowired
     private AlumnoService alumnoService;
+    @Autowired
+    private com.colegio.project.service.SheetsSyncService sheets;
 
     @GetMapping
     public ResponseEntity<List<Alumno>> listar() {
@@ -31,7 +33,9 @@ public class AlumnoController {
                     .body(Map.of("mensaje", "Ya existe un alumno con ese DNI"));
         }
         alumno.setId(null); 
-        return ResponseEntity.status(HttpStatus.CREATED).body(alumnoService.guardar(alumno));
+        Alumno g = alumnoService.guardar(alumno);
+        sheets.sync();
+        return ResponseEntity.status(HttpStatus.CREATED).body(g);
     }
 
     @PutMapping("/{id}")
@@ -51,7 +55,12 @@ public class AlumnoController {
         alumno.setApellido(datos.getApellido());
         alumno.setGrado(datos.getGrado());
         alumno.setPromedio(datos.getPromedio());
-        return ResponseEntity.ok(alumnoService.guardar(alumno));
+        if (datos.getAsistencia() != null) alumno.setAsistencia(datos.getAsistencia());
+        if (datos.getContinuidad() != null) alumno.setContinuidad(datos.getContinuidad());
+        if (datos.getMotivoNoContinua() != null) alumno.setMotivoNoContinua(datos.getMotivoNoContinua());
+        Alumno g = alumnoService.guardar(alumno);
+        sheets.sync();
+        return ResponseEntity.ok(g);
     }
 
     @DeleteMapping("/{id}")
@@ -61,6 +70,7 @@ public class AlumnoController {
                     .body(Map.of("mensaje", "El alumno no existe"));
         }
         alumnoService.eliminar(id);
+        sheets.sync();
         return ResponseEntity.ok(Map.of("mensaje", "Alumno eliminado"));
     }
 }

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Asistencia - Colegio San Jose Maria</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    select, input[type="date"] {
+      padding: 10px;
+      border: 1px solid var(--borde);
+      border-radius: 6px;
+      font-size: 14px;
+      flex: 1;
+      min-width: 140px;
+      background: white;
+    }
+    select:focus { outline: 2px solid var(--azul); border-color: transparent; }
+    .barra a { color: white; font-size: 14px; margin-right: 8px; }
+    input[type="radio"] { flex: none; min-width: auto; margin: 0 2px 0 8px; }
+    td.estados { white-space: nowrap; }
+    td.estados label { font-size: 13px; cursor: pointer; }
+    td input.obs { width: 100%; min-width: 120px; padding: 6px; font-size: 13px; }
+    .resumen { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; font-size: 14px; }
+    .resumen span { background: #eff6ff; border-radius: 6px; padding: 6px 12px; }
+    .estado-dia { font-size: 14px; color: var(--gris); margin: 4px 0 10px; }
+  </style>
+  <script>
+    if (!sessionStorage.getItem("correo")) {
+      window.location.replace("login.html");
+    }
+  </script>
+</head>
+<body>
+  <header class="barra">
+    <span class="titulo">Colegio San Jose Maria</span>
+    <span class="usuario">
+      <a href="index.html">Alumnos y docentes</a>
+      <a href="academico.html">Grados, secciones y cursos</a>
+      <a href="matriculas.html">Matrículas</a>
+      <a href="horarios.html">Horarios</a>
+      <span id="usuarioActual"></span>
+      <button type="button" id="btnSalir">Cerrar sesión</button>
+    </span>
+  </header>
+
+  <main>
+    <section>
+      <h2>Asistencia diaria</h2>
+      <form id="formCargar">
+        <select id="aSeccion" required></select>
+        <input type="date" id="aFecha" title="Fecha" required>
+        <button type="submit">Ver lista</button>
+      </form>
+      <p id="msgAsistencia" class="mensaje"></p>
+
+      <div id="zonaLista" hidden>
+        <p id="estadoDia" class="estado-dia"></p>
+        <div class="tabla-scroll">
+          <table>
+            <thead><tr><th>N.°</th><th>Grado y sección</th><th>DNI</th><th>Alumno</th><th>Asistencia</th><th>Observación</th></tr></thead>
+            <tbody id="tablaAsistencia"></tbody>
+          </table>
+        </div>
+        <div class="resumen" id="resumen"></div>
+        <button type="button" id="btnTodosPresentes" class="secundario">Marcar todos presentes</button>
+        <button type="button" id="btnGuardar">Guardar asistencia</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="asistencia.js"></script>
+</body>
+</html>

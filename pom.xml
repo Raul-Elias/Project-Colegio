@@ -22,6 +22,12 @@
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
         <!-- Soporte Web / API REST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -42,6 +48,11 @@
         
 
         <!-- Driver de MySQL (Requerido para conectar con tu base de datos) -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.5</version>
+        </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>

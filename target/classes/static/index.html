@@ -2,41 +2,86 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Sistema Colegio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colegio San Jose Maria</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    select {
+      padding: 10px;
+      border: 1px solid var(--borde);
+      border-radius: 6px;
+      font-size: 14px;
+      flex: 1;
+      min-width: 140px;
+      background: white;
+    }
+    select:focus { outline: 2px solid var(--azul); border-color: transparent; }
+    .barra a { color: white; font-size: 14px; margin-right: 8px; }
+  </style>
+  <script>
+    if (sessionStorage.getItem("rol") === "ESTUDIANTE") { window.location.replace("estudiante.html"); }
+    if (!sessionStorage.getItem("correo")) {
+      window.location.replace("login.html");
+    }
+  </script>
 </head>
 <body>
-  <h1>Sistema Colegio</h1>
+  <header class="barra">
+    <span class="titulo">Colegio San Jose Maria</span>
+    <span class="usuario">
+      <a style="color: rgb(255, 251, 0);">Alumnos y docentes</a>
+      <a href="academico.html">Grados, secciones y cursos</a>
+      <a href="matriculas.html">Matrículas</a>
+      <a href="horarios.html">Horarios</a>
+      <a href="asistencia.html">Asistencia</a>
+      <span id="usuarioActual"></span>
+      <button type="button" id="btnSalir">Cerrar sesión</button>
+    </span>
+  </header>
 
-  <section>
-    <h2>Alumnos</h2>
-    <form id="formAlumno">
-      <input id="aNombres" placeholder="Nombres" required>
-      <input id="aApellido" placeholder="Apellido" required>
-      <input id="aGrado" placeholder="Grado" required>
-      <input id="aPromedio" type="number" step="0.01" placeholder="Promedio" required>
-      <button type="submit">Guardar alumno</button>
-    </form>
-    <table>
-      <thead><tr><th>ID</th><th>Nombres</th><th>Apellido</th><th>Grado</th><th>Promedio</th></tr></thead>
-      <tbody id="tablaAlumnos"></tbody>
-    </table>
-  </section>
+  <main>
+    <section>
+      <h2>Alumnos</h2>
+      <form id="formAlumno">
+        <input type="hidden" id="aId">
+        <input id="aDni" placeholder="DNI (8 dígitos)" maxlength="8" inputmode="numeric" required>
+        <input id="aNombres" placeholder="Nombres" required>
+        <input id="aApellido" placeholder="Apellido" required>
+        <input id="aGrado" placeholder="Grado" required>
+        <input id="aPromedio" type="number" step="0.01" min="0" max="20" placeholder="Promedio (0 a 20)" required>
+        <button type="submit" id="btnGuardarAlumno">Guardar alumno</button>
+        <button type="button" id="btnCancelarAlumno" class="secundario" hidden>Cancelar</button>
+      </form>
+      <p id="msgAlumno" class="mensaje"></p>
+      <div class="tabla-scroll">
+        <table>
+          <thead><tr><th>ID</th><th>DNI</th><th>Nombres</th><th>Apellido</th><th>Grado</th><th>Promedio</th><th>Acciones</th></tr></thead>
+          <tbody id="tablaAlumnos"></tbody>
+        </table>
+      </div>
+    </section>
 
-  <section>
-    <h2>Docentes</h2>
-    <form id="formDocente">
-      <input id="dNombres" placeholder="Nombres" required>
-      <input id="dEspecialidad" placeholder="Especialidad" required>
-      <input id="dCorreo" type="email" placeholder="Correo" required>
-      <input id="dTelefono" placeholder="Teléfono" required>
-      <button type="submit">Guardar docente</button>
-    </form>
-    <table>
-      <thead><tr><th>ID</th><th>Nombres</th><th>Especialidad</th><th>Correo</th><th>Teléfono</th></tr></thead>
-      <tbody id="tablaDocentes"></tbody>
-    </table>
-  </section>
+    <section>
+      <h2>Docentes</h2>
+      <form id="formDocente">
+        <input type="hidden" id="dId">
+        <input id="dDni" placeholder="DNI (8 dígitos)" maxlength="8" inputmode="numeric" required>
+        <input id="dNombres" placeholder="Nombres" required>
+        <input id="dEspecialidad" placeholder="Especialidad" required>
+        <input id="dCorreo" type="email" placeholder="Correo" required>
+        <input id="dTelefono" placeholder="Teléfono (9 dígitos)" maxlength="9" inputmode="numeric" required>
+        <button type="submit" id="btnGuardarDocente">Guardar docente</button>
+        <button type="button" id="btnCancelarDocente" class="secundario" hidden>Cancelar</button>
+      </form>
+      <p id="msgDocente" class="mensaje"></p>
+      <div class="tabla-scroll">
+        <table>
+          <thead><tr><th>ID</th><th>DNI</th><th>Nombres</th><th>Especialidad</th><th>Correo</th><th>Teléfono</th><th>Acciones</th></tr></thead>
+          <tbody id="tablaDocentes"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 
   <script src="app.js"></script>
 </body>

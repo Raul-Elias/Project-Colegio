@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Horarios - Colegio San Jose Maria</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    select, input[type="number"], input[type="time"] {
+      padding: 10px;
+      border: 1px solid var(--borde);
+      border-radius: 6px;
+      font-size: 14px;
+      flex: 1;
+      min-width: 140px;
+      background: white;
+    }
+    select:focus { outline: 2px solid var(--azul); border-color: transparent; }
+    .barra a { color: white; font-size: 14px; margin-right: 8px; }
+  </style>
+  <script>
+    if (!sessionStorage.getItem("correo")) {
+      window.location.replace("login.html");
+    }
+  </script>
+</head>
+<body>
+  <header class="barra">
+    <span class="titulo">Colegio San Jose Maria</span>
+    <span class="usuario">
+      <a href="index.html">Alumnos y docentes</a>
+      <a href="academico.html">Grados, secciones y cursos</a>
+      <a href="matriculas.html">Matrículas</a>
+      <a href="asistencia.html">Asistencia</a>
+      <span id="usuarioActual"></span>
+      <button type="button" id="btnSalir">Cerrar sesión</button>
+    </span>
+  </header>
+
+  <main>
+    <section>
+      <h2>Armar horario</h2>
+      <form id="formHorario">
+        <input type="hidden" id="hId">
+        <input type="number" id="hAnio" placeholder="Año escolar" min="2000" max="2100" required>
+        <select id="hSeccion" required></select>
+        <select id="hCurso" required></select>
+        <select id="hDocente" required></select>
+        <select id="hDia" required>
+          <option value="">Día</option>
+          <option value="LUNES">Lunes</option>
+          <option value="MARTES">Martes</option>
+          <option value="MIERCOLES">Miércoles</option>
+          <option value="JUEVES">Jueves</option>
+          <option value="VIERNES">Viernes</option>
+        </select>
+        <input type="time" id="hInicio" title="Hora de inicio" required>
+        <input type="time" id="hFin" title="Hora de fin" required>
+        <button type="submit" id="btnGuardarHorario">Guardar bloque</button>
+        <button type="button" id="btnCancelarHorario" class="secundario" hidden>Cancelar</button>
+      </form>
+      <p id="msgHorario" class="mensaje"></p>
+    </section>
+
+    <section>
+      <div class="cabecera-tabla"><h2>Horarios registrados</h2><button type="button" class="secundario" id="btnOrdenHorarios"></button></div>
+      <form id="formFiltro">
+        <input type="number" id="fAnio" placeholder="Año escolar" min="2000" max="2100">
+        <select id="fSeccion"></select>
+        <select id="fDocente"></select>
+        <button type="submit" class="secundario">Filtrar</button>
+        <button type="button" id="btnTodos" class="secundario">Ver todos</button>
+      </form>
+      <div class="tabla-scroll">
+        <table>
+          <thead><tr><th>Año</th><th>Día</th><th>Hora</th><th>Sección</th><th>Curso</th><th>Docente</th><th>Acciones</th></tr></thead>
+          <tbody id="tablaHorarios"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="orden.js"></script>
+  <script src="horarios.js"></script>
+</body>
+</html>

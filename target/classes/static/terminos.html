@@ -52,7 +52,9 @@
         body: JSON.stringify({ correo: correo })
       });
       if (res.ok) {
-        window.location.href = "index.html";
+                  window.location.href = sessionStorage.getItem("rol") === "ADMIN"
+            ? "configurar-2fa.html"
+            : "index.html";
       } else {
         const datos = await res.json();
         document.getElementById("mensaje").textContent = datos.mensaje;
