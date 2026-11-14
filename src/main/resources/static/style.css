@@ -136,7 +136,3 @@ body.acceso {
   margin: 8px 0 14px;
 }
 #qr { display: flex; justify-content: center; margin: 10px 0; }
-/* ---------- Encabezado de tabla con botón de orden en la esquina ---------- */
-.cabecera-tabla { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
-.cabecera-tabla h2 { margin: 0; }
-.cabecera-tabla button { padding: 6px 12px; font-size: 13px; }

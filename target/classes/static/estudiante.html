@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mi portal · Colegio San José María</title><link rel="stylesheet" href="style.css">
+<style>.k{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:16px}.k div{background:#fff;border-radius:14px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.08)}.k b{display:block;font-size:34px;color:#d62839}</style>
+<script>if (sessionStorage.getItem("rol") !== "ESTUDIANTE") location.replace("login.html");</script></head>
+<body>
+<header class="barra"><span class="titulo">Colegio San José María · Mi portal</span>
+<span class="usuario"><button id="salir" type="button">Cerrar sesión</button></span></header>
+<main><section><h2 id="hola">Hola 👋</h2><p>Toca a Tobi para que te ayude con tus notas. Si te estorba, puedes ocultarlo con la ✕.</p>
+<div class="k"><div><span>Promedio</span><b id="pr">–</b></div><div><span>Asistencia</span><b id="as">–</b></div><div><span>Grado</span><b id="gr" style="font-size:22px">–</b></div></div></section></main>
+<script>
+const dni=(sessionStorage.getItem("correo")||"").split("@")[0];
+document.getElementById("salir").onclick=()=>{sessionStorage.clear();location.replace("login.html")};
+fetch("/api/agentes/tutor/perfil?dni="+dni).then(r=>r.ok?r.json():null).then(p=>{if(!p)return;
+hola.textContent="Hola, "+p.nombre+" 👋";pr.textContent=p.promedio;as.textContent=p.asistencia+"%";gr.textContent=p.grado});
+</script><script src="mascot.js"></script></body></html>

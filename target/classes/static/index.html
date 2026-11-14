@@ -5,7 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Colegio San Jose Maria</title>
   <link rel="stylesheet" href="style.css">
+  <style>
+    select {
+      padding: 10px;
+      border: 1px solid var(--borde);
+      border-radius: 6px;
+      font-size: 14px;
+      flex: 1;
+      min-width: 140px;
+      background: white;
+    }
+    select:focus { outline: 2px solid var(--azul); border-color: transparent; }
+    .barra a { color: white; font-size: 14px; margin-right: 8px; }
+  </style>
   <script>
+    if (sessionStorage.getItem("rol") === "ESTUDIANTE") { window.location.replace("estudiante.html"); }
     if (!sessionStorage.getItem("correo")) {
       window.location.replace("login.html");
     }
@@ -15,11 +29,11 @@
   <header class="barra">
     <span class="titulo">Colegio San Jose Maria</span>
     <span class="usuario">
-      <a style="color:rgb(255, 230, 0);font-size:14px">Alumnos y docentes</a>
-      <a href="academico.html" style="color:white;font-size:14px">Grados, secciones y cursos</a>
-      <a href="matriculas.html" style="color:white;font-size:14px">Matrículas</a>
-      <a href="horarios.html" style="color:white;font-size:14px">Horarios</a>
-      <a href="asistencia.html" style="color:white;font-size:14px">Asistencia</a>
+      <a style="color: rgb(255, 251, 0);">Alumnos y docentes</a>
+      <a href="academico.html">Grados, secciones y cursos</a>
+      <a href="matriculas.html">Matrículas</a>
+      <a href="horarios.html">Horarios</a>
+      <a href="asistencia.html">Asistencia</a>
       <span id="usuarioActual"></span>
       <button type="button" id="btnSalir">Cerrar sesión</button>
     </span>
